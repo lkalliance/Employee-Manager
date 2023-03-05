@@ -41,7 +41,7 @@ const getDepartments = async function () {
             return false;
         } else return result;
     })
-}
+};
 
 const addEmployee = async function () {
     const responses = await inquirer.prompt(
@@ -53,7 +53,7 @@ const addEmployee = async function () {
             return false;
         } else return result;
     })
-}
+};
 
 const addRole = async function () {
     const responses = await inquirer.prompt(
@@ -65,7 +65,7 @@ const addRole = async function () {
             return false;
         } else return result;
     })
-}
+};
 
 const addDepartment = async function () {
     const responses = await inquirer.prompt(
@@ -77,5 +77,7 @@ const addDepartment = async function () {
             return false;
         } else return result;
     })
-}
+};
 
+
+module.exports = { getEmployees, getRoles, getDepartments, addEmployee, addRole, addDeparrtment };

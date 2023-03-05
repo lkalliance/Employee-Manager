@@ -23,7 +23,7 @@ const inquiries = {
             { message: "What is the employee's first name?", name: "first", type: "input" },
             { message: "What is the employee's last name?", name: "last", type: "input" },
             { message: "What is the employee's role?", name: "role", type: "list", choices: roles },
-            { message: "Who is the employee's manager?", name: "manager", type: "list", choices: team }
+            { message: "Who is the employee's manager?", name: "manager", type: "list", choices: employees }
         ]
 }
 
