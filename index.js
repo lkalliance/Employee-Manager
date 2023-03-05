@@ -1,5 +1,5 @@
-const inquirer = require('inquirer');
 const mysql = require('mysql2');
+const inquiries = require('./modules/inquiries');
 
 const db = mysql.createConnection(
     {
