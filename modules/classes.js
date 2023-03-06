@@ -1,45 +1,64 @@
 const queries = require('./queries');
 
 const employees = [];
-const employeeIds = [];
+const employeeNames = [];
 const roles = [];
-const roleIds = [];
+const roleNames = [];
 const departments = [];
-const departmentIds = [];
+const departmentNames = [];
 
 class Employee {
-    constructor() {
-        const result = queries.addEmployee();
-        this.id = result.id;
-        this.name = `${this.result.first} ${this.result.last}`;
-        this.role = roles.indexOf(result.role);
-        this.manager = employees.indexOf(result.manager);
-        employees.push(this.name);
-        employeeIds.push(this.id);
+    constructor(employee) {
+        this.id = employee.id;
+        this.fname = employee.first;
+        this.lname = employee.last;
+        this.role = employee.role;
+        this.manager = employee.manager;
+        employees.push(this);
+        employeeNames.push(`${this.getName()} (${this.role})`);
+    }
+
+    getName() {
+        return `${this.fname} ${this.lname}`;
+    }
+
+    getManager() {
+        if (!this.manager) return false;
+        return this.manager;
     }
 }
 
 class Role {
-    constructor() {
-        const result = queries.addRole();
-        this.id = result.id;
-        this.title = result.title;
-        this.salary = result.salary;
-        this.department = departments.indexOf(result.department);
-        roles.push(this.title);
-        roleIds.push(this.id);
+    constructor(role) {
+        this.id = role.id;
+        this.title = role.title;
+        this.salary = role.salary;
+        this.department = role.department;
+        roles.push(this);
+        roleNames.push(this.title);
+    }
+
+    getTitle() {
+        return this.title;
+    }
+
+    getSalary() {
+        return `$${this.salary}`;
+    }
+
+    getDepartment() {
+        return this.department;
     }
 }
 
 class Department {
-    constructor() {
-        const result = queries.addDepartment();
-        this.id = result.id;
-        this.name = result.name;
-        departments.push(this.name);
-        departmentIds.push(this.id);
+    constructor(department) {
+        this.id = department.id;
+        this.name = department.name;
+        departments.push(this);
+        departmentNames.push(this.name);
     }
 }
 
 
-module.exports = { Employee, Role, Department, employees, roles, departments, employeeIds, roleIds, departmentIds }
+module.exports = { Employee, Role, Department, employees, roles, departments, employeeNames, roleNames, departmentNames }

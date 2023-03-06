@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 const db = require('../index');
-const queries = require('queries');
+const inquiries = require('./inquiries');
 
 const getEmployees = async function (department) {
     const queries = [
@@ -25,6 +25,9 @@ const getEmployees = async function (department) {
 };
 
 const getRoles = async function (department) {
+    const whichDepartment = inquirer.prompt(
+        inquiries.getRoles
+    )
     const roles = await db.query('SELECT r.title, d.name as department, r.salary FROM role r JOIN department d ON r.department_id=d.id?',
     (department>=0) ? ` WHERE d.id=${department}` : ';', (err, result) => {
         if (err) {
@@ -51,8 +54,9 @@ const addEmployee = async function () {
         if (err) {
             console.log(new Error('Add operation not successful', err));
             return false;
-        } else return result;
-    })
+        }
+    });
+    const newEmployee = new Employee(addition);
 };
 
 const addRole = async function () {
@@ -63,8 +67,9 @@ const addRole = async function () {
         if (err) {
             console.log(new Error('Add operation not successful', err));
             return false;
-        } else return result;
-    })
+        }
+    });
+    const newRole = new Role(addition);
 };
 
 const addDepartment = async function () {
@@ -75,8 +80,9 @@ const addDepartment = async function () {
         if (err) {
             console.log(new Error('Add operation not successful', err));
             return false;
-        } else return result;
-    })
+        }
+    });
+    const newDepartment = new Department(addition);
 };
 
 
