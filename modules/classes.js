@@ -1,64 +1,79 @@
-const queries = require('./queries');
-
 const employees = [];
 const employeeNames = [];
 const roles = [];
 const roleNames = [];
 const departments = [];
 const departmentNames = [];
+const depIds = {};
+const roleIds = {};
+const mgrIds = {};
 
 class Employee {
-    constructor(employee) {
-        this.id = employee.id;
-        this.fname = employee.first;
-        this.lname = employee.last;
-        this.role = employee.role;
-        this.manager = employee.manager;
-        employees.push(this);
-        employeeNames.push(`${this.getName()} (${this.role})`);
+    constructor(id, responses) {
+        this.id = id;
+        this.fname = responses.first;
+        this.lname = responses.last;
+        this.fullName = `${responses.first} ${responses.last}`;
+        this.asManager = `${responses.first} ${responses.last} (${responses.role})`
+        this.roleId = roleIds[responses.role];
+        this.role = responses.role;
+        this.mgrId = responses.manager ? mgrIds[responses.manager] : null;
+        this.salary = responses.salary;
+        this.department = responses.department;
+        if (responses.manager) this.manager = responses.manager.split(" (")[0];
+
+        employeeNames.push(this.asManager);
+        mgrIds[this.asManager] = this.id;
     }
 
-    getName() {
-        return `${this.fname} ${this.lname}`;
-    }
-
-    getManager() {
-        if (!this.manager) return false;
-        return this.manager;
+    display() {
+        return {
+            id: this.id,
+            name: `${this.fname} ${this.lname}`,
+            title: this.role,
+            salary: this.salary,
+            manager: this.manager,
+            department: this.department
+        }
     }
 }
 
 class Role {
-    constructor(role) {
-        this.id = role.id;
-        this.title = role.title;
-        this.salary = role.salary;
-        this.department = role.department;
-        roles.push(this);
-        roleNames.push(this.title);
+    constructor(id, responses) {
+        this.id = id;
+        this.title = responses.title;
+        this.salary = responses.salary;
+        this.depId = depIds[responses.department];
+        this.department = responses.department;
+        roleNames.push(responses.title);
+        roleIds[this.title] = id;
     }
 
-    getTitle() {
-        return this.title;
-    }
-
-    getSalary() {
-        return `$${this.salary}`;
-    }
-
-    getDepartment() {
-        return this.department;
+    display() {
+        return {
+            id: this.id,
+            title: this.title,
+            department: this.department,
+            salary: this.salary
+        }
     }
 }
 
 class Department {
-    constructor(department) {
-        this.id = department.id;
-        this.name = department.name;
-        departments.push(this);
-        departmentNames.push(this.name);
+    constructor(id, department) {
+        this.id = id;
+        this.name = department;
+        departmentNames.push(department);
+        depIds[department] = id;
+    }
+
+    display() {
+        return {
+            id: this.id,
+            name: this.name
+        }
     }
 }
 
 
-module.exports = { Employee, Role, Department, employees, roles, departments, employeeNames, roleNames, departmentNames }
+module.exports = { Employee, Role, Department, employees, employeeNames, roles, roleNames, departments, departmentNames, depIds, mgrIds, roleIds }
