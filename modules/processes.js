@@ -70,7 +70,8 @@ const updateEmployee = async () => {
         values.prompts.updateEmployee
     )
 
-    await queries.updateEmployee(responses);
+    const justName = responses.employee.split(' (')[0];
+    await queries.updateRole(responses, justName);
 }
 
 
