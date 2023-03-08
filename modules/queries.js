@@ -80,18 +80,20 @@ const addEmployee = async (responses) => {
     const fullName = `${responses.first} ${responses.last}`;
     const mgrName = `${fullName} (${responses.role})`;
     reference.employeeNames.push(mgrName);
+    reference.empRoles[fullName] = responses.role;
     reference.managerNames.push(mgrName);
     reference.mgrConvert[mgrName] = addition[0].insertId;
     return addition;
 }
 
-const updateEmployee = async(responses) => {
+const updateRole = async(responses, justName) => {
     const update = await db.promise().query('UPDATE employee SET role_id=? WHERE id=?', [reference.roleConvert[responses.role], reference.mgrConvert[responses.employee]]).catch((err) => {
         console.log(err);
         return { error: 'update failed' }
     });
 
-    console.log(update);
+    reference.empRoles[justName] = responses.role;
+    return update;    
 }
 
 
@@ -105,5 +107,5 @@ function convertToCurrency(int) {
 }
 
 
-module.exports = { getDepartments, getRoles, getEmployees, addDepartment, addRole, addEmployee, updateEmployee }
+module.exports = { getDepartments, getRoles, getEmployees, addDepartment, addRole, addEmployee, updateRole }
 

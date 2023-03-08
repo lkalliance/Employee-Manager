@@ -16,7 +16,7 @@ const startProcess = async () => {
     const q = await inquirer.prompt(
         initialize.prompts.default
     );
-    if ( q.action == "Done" ) return;
+    if ( q.action == "Done" ) endProcess();
     else await questions[q.action](q);
     startProcess();
 }
@@ -24,6 +24,11 @@ const startProcess = async () => {
 const start = async () => {
     await initialize.init();
     startProcess();
+}
+
+const endProcess = () => {
+    console.log("Now exiting the application.");
+    process.exit();
 }
 
 start();
