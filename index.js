@@ -7,6 +7,7 @@ const questions = {
     "View Employees": processes.getEmployees,
     "Add Employee": processes.addEmployee,
     "Update Employee Role": processes.updateEmployeeRole,
+    "Update Employee Manager": processes.updateEmployeeManager,
     "View Roles": processes.getRoles,
     "Add Role":  processes.addRole,
     "View Departments": processes.getDepartments,

@@ -13,8 +13,10 @@ const getDepartments = async () => {
         console.log(data.error);
         return;
     }
-    console.log(`\nHere are the listed departments:\n\n`);
+    console.clear();
+    console.log(`\n\nHere are the listed departments:\n`);
     console.table(data);
+    console.log(`\n\n`);
     return;
 }
 
@@ -23,20 +25,16 @@ const getRoles = async () => {
         console.log(`\n\nThere are no roles entered.\nCreate one by using "Add Role".\n\n`);
         return;
     }
-    const whichDep = await inquirer.prompt(
-        values.prompts.getRoles
-    ).catch((err) => {
-        console.log(`\n\nThere was a problem with your entry. Please try again.\n\n`);
-        return;
-    })
-    
-    const data = await queries.getRoles(whichDep.department);
+     
+    const data = await queries.getRoles();
     if (data.error) {
         console.log(data.error);
         return;
     }
-    console.log(`\nHere are the listed roles in ${whichDep.department}:\n`);
+    console.clear();
+    console.log(`\n\nHere are the listed roles:\n`);
     console.table(data);
+    console.log(`\n\n`);
     return;
 }
 
@@ -50,8 +48,10 @@ const getEmployees = async () => {
         console.log(data.error);
         return;
     }
-    console.log(`\nHere are the listed employees:\n\n`);
+    console.clear();
+    console.log(`\n\nHere are the listed employees:\n\n`);
     console.table(data);
+    console.log(`\n\n`);
     return;
 };
 
@@ -67,13 +67,34 @@ const updateEmployeeRole = async () => {
         return;
     }
     const responses = await inquirer.prompt(
-        values.prompts.updateEmployee
+        values.prompts.updateRole
     )
 
     const justName = responses.employee.split(' (')[0];
     await queries.updateRole(responses, justName);
 
-    console.log(`The employee "${justName}" has been been updated.`)
+    console.clear();
+    console.log(`\n\n${justName}'s role has been updated.\n\n`)
+    console.log(`\n\n`);
+
+}
+
+
+const updateEmployeeManager = async () => {
+    if ( values.employeeNames.length == 1 ) {
+        console.log(`\n\nThere are not enough employees entered.\nCreate them by using "Add Employee".\n\n`);
+        return;
+    }
+    const responses = await inquirer.prompt(
+        values.prompts.updateManager
+    )
+
+    const justName = responses.employee.split(' (')[0];
+    await queries.updateManager(responses);
+
+    console.clear();
+    console.log(`\n\n${justName}'s manager has been changed.\n\n`)
+    console.log(`\n\n`);
 
 }
 
@@ -88,7 +109,9 @@ const addDepartment = async () => {
 
     await queries.addDepartment(responses);
 
-    console.log(`The department "${responses.name}" has been added to the database.`)
+    console.clear();
+    console.log(`\n\nThe department "${responses.name}" has been added to the database.\n\n`);
+    console.log(`\n\n`);
 }
 
 const addRole = async () => {
@@ -104,8 +127,9 @@ const addRole = async () => {
     });
 
     await queries.addRole(responses);
-    console.log(`The role "${responses.title}" has been added to the database.`)
-
+    console.clear();
+    console.log(`\n\nThe role "${responses.title}" has been added to the database.\n\n`);
+    console.log(`\n\n`);
 }
 
 const addEmployee = async () => {
@@ -126,8 +150,9 @@ const addEmployee = async () => {
     });
 
     await queries.addEmployee(responses);
-    console.log(`The employee "${responses.first} ${responses.last}" has been added to the database.`)
-
+    console.clear();
+    console.log(`\n\nThe employee "${responses.first} ${responses.last}" has been added to the database.\n\n`);
+    console.log(`\n\n`);
 }
 
 
@@ -139,6 +164,7 @@ module.exports = {
     getRoles,
     getEmployees,
     updateEmployeeRole,
+    updateEmployeeManager,
     addDepartment,
     addRole,
     addEmployee
