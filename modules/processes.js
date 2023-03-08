@@ -13,8 +13,10 @@ const getDepartments = async () => {
         console.log(data.error);
         return;
     }
-    console.log(`\nHere are the listed departments:\n\n`);
+    console.clear();
+    console.log(`\n\nHere are the listed departments:\n`);
     console.table(data);
+    console.log(`\n\n`);
     return;
 }
 
@@ -23,20 +25,16 @@ const getRoles = async () => {
         console.log(`\n\nThere are no roles entered.\nCreate one by using "Add Role".\n\n`);
         return;
     }
-    const whichDep = await inquirer.prompt(
-        values.prompts.getRoles
-    ).catch((err) => {
-        console.log(`\n\nThere was a problem with your entry. Please try again.\n\n`);
-        return;
-    })
-    
-    const data = await queries.getRoles(whichDep.department);
+     
+    const data = await queries.getRoles();
     if (data.error) {
         console.log(data.error);
         return;
     }
-    console.log(`\nHere are the listed roles in ${whichDep.department}:\n`);
+    console.clear();
+    console.log(`\n\nHere are the listed roles:\n`);
     console.table(data);
+    console.log(`\n\n`);
     return;
 }
 
@@ -50,8 +48,10 @@ const getEmployees = async () => {
         console.log(data.error);
         return;
     }
-    console.log(`\nHere are the listed employees:\n\n`);
+    console.clear();
+    console.log(`\n\nHere are the listed employees:\n\n`);
     console.table(data);
+    console.log(`\n\n`);
     return;
 };
 

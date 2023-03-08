@@ -13,13 +13,23 @@ const getDepartments = async () => {
     return dataReturn[0];
 }
 
-const getRoles = async (department) => {
-    const dataReturn = await db.promise().query('SELECT r.id, r.title, d.name as department, r.salary FROM role r LEFT JOIN department d ON r.department_id=d.id WHERE d.id=?', reference.depConvert[department]).catch((err) => {
+const getRoles = async () => {
+    const dataReturn = await db.promise().query('SELECT r.id, r.title, d.name as department, r.salary FROM role r LEFT JOIN department d ON r.department_id=d.id').catch((err) => {
         console.log(err);
         return { error: 'query failed' }
     });
 
     const result = dataReturn[0];
+    result.sort((a, b) => {
+        return (a.department < b.department) ? -1 
+                : (a.department > b.department) ? 1 
+                : (b.salary - a.salary);
+        }
+        // return (a.department == b.department) ? (a.salary - b.salary)
+        //     : (a.title < b.title) ? -1 
+        //     : (a.title > b.title) ? 1 
+        //     : 0;
+    );
     for (role of result) {
         role.salary = convertToCurrency(role.salary);
     }
