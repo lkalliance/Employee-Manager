@@ -73,7 +73,9 @@ const updateEmployeeRole = async () => {
     const justName = responses.employee.split(' (')[0];
     await queries.updateRole(responses, justName);
 
-    console.log(`The employee "${justName}" has been been updated.`)
+    console.clear();
+    console.log(`\n\nThe employee "${justName}" has been been updated.\n\n`)
+    console.log(`\n\n`);
 
 }
 
@@ -88,7 +90,9 @@ const addDepartment = async () => {
 
     await queries.addDepartment(responses);
 
-    console.log(`The department "${responses.name}" has been added to the database.`)
+    console.clear();
+    console.log(`\n\nThe department "${responses.name}" has been added to the database.\n\n`);
+    console.log(`\n\n`);
 }
 
 const addRole = async () => {
@@ -104,8 +108,9 @@ const addRole = async () => {
     });
 
     await queries.addRole(responses);
-    console.log(`The role "${responses.title}" has been added to the database.`)
-
+    console.clear();
+    console.log(`\n\nThe role "${responses.title}" has been added to the database.\n\n`);
+    console.log(`\n\n`);
 }
 
 const addEmployee = async () => {
@@ -126,8 +131,9 @@ const addEmployee = async () => {
     });
 
     await queries.addEmployee(responses);
-    console.log(`The employee "${responses.first} ${responses.last}" has been added to the database.`)
-
+    console.clear();
+    console.log(`\n\nThe employee "${responses.first} ${responses.last}" has been added to the database.\n\n`);
+    console.log(`\n\n`);
 }
 
 
