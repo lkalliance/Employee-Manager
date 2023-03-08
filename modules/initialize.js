@@ -1,9 +1,9 @@
 const data = require('./db_server');
-const queries = require('./queries');
 const db = data.db;
 
-const managerNames = [];
+const managerNames = ["No one"];
 const mgrConvert = {};
+const employeeNames = [];
 const departmentNames = [];
 const depConvert = {};
 const roleNames = [];
@@ -29,6 +29,7 @@ const init = async () => {
     employees[0].forEach((employee) => {
         const fullName = `${employee.first_name} ${employee.last_name} (${employee.title})`;
         managerNames.push(fullName);
+        employeeNames.push(fullName);
         mgrConvert[fullName] = employee.id;
     });
 
@@ -62,6 +63,11 @@ const prompts = {
             { message: "What is the employee's last name?", name: "last", type: "input" },
             { message: "What is the employee's role?", name: "role", type: "list", choices: roleNames }
         ],
+    updateEmployee:
+        [
+            { message: "Which employee needs a different role?", name: "employee", type: "list", choices: employeeNames },
+            { message: "What will be the employee's new role?", name: "role", type: "list", choices: roleNames },
+        ],
     getRoles: 
         {
             message: "Which department?",
@@ -75,6 +81,7 @@ const prompts = {
 module.exports = {
     managerNames,
     mgrConvert,
+    employeeNames,
     departmentNames,
     depConvert,
     roleNames,
