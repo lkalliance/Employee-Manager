@@ -1,3 +1,4 @@
+const inquirer = require('inquirer');
 const initialize = require('./modules/initialize');
 const processes = require('./modules/processes');
 
@@ -13,10 +14,11 @@ const questions = {
 
 const startProcess = async () => {
     const q = await inquirer.prompt(
-        inq.prompts.default
+        initialize.prompts.default
     );
     if ( q.action == "Done" ) return;
-    else initialize.questions[q.action]();
+    else await questions[q.action](q);
+    startProcess();
 }
 
 const start = async () => {

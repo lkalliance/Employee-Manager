@@ -9,17 +9,18 @@ const getDepartments = async () => {
         console.log(err);
         return { error: 'query failed' }
     });
+
     return dataReturn[0];
 }
 
-const getRoles = async () => {
-    const dataReturn = await db.promise().query('SELECT r.id, r.title, d.name as department, r.salary FROM role r LEFT JOIN department d ON r.department_id=d.id').catch((err) => {
+const getRoles = async (department) => {
+    const dataReturn = await db.promise().query('SELECT r.id, r.title, d.name as department, r.salary FROM role r LEFT JOIN department d ON r.department_id=d.id WHERE d.id=?', reference.depConvert[department]).catch((err) => {
         console.log(err);
         return { error: 'query failed' }
     });
 
     const result = dataReturn[0];
-    for (role in data) {
+    for (role of result) {
         role.salary = convertToCurrency(role.salary);
     }
     return result;
@@ -32,14 +33,15 @@ const getEmployees = async () => {
     });
 
     const result = dataReturn[0];
+    result.sort((a, b) => { return (a.last < b.last) ? -1 : (a.last > b.last) ? 1 : 0 });
     const data = [];
-    for (employee in result) {
+    for (employee of result) {
         data.push({
             id: employee.id,
             name: `${employee.first} ${employee.last}`,
             title: employee.title,
             department: employee.department,
-            manager: `${employee.mfirst} ${employee.mlast}`,
+            manager: (employee.mfirst && employee.mlast) ? `${employee.mfirst} ${employee.mlast}` : 'none',
             salary: convertToCurrency(employee.salary)
         });
     }
@@ -53,9 +55,8 @@ const addDepartment = async (responses) => {
     })
 
     reference.departmentNames.push(responses.name);
-    reference.depConvert[responses.name] = responses.id;
-    console.log(addition);
-    return;
+    reference.depConvert[responses.name] = addition[0].insertId;
+    return addition;
 }
 
 const addRole = async (responses) => {
@@ -65,24 +66,32 @@ const addRole = async (responses) => {
     })
 
     reference.roleNames.push(responses.title);
-    reference.roleConvert[responses.title] = responses.id;
-    console.log(addition);
-    return;
+    reference.roleConvert[responses.title] = addition[0].insertId;
+    return addition;
 }
 
 const addEmployee = async (responses) => {
-    const mgr = responses.manager ? reference.mgrConvert[responses.manager] : null;
-    const addition = await db.promise().query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ( ?, ?, ?, ?)', [ respones.first, responses.last, reference.roleConvert[responses.role], mgr]).catch((err) => {
+    const mgr = (responses.manager && !(responses.manager == "No one")) ? reference.mgrConvert[responses.manager] : null;
+    const addition = await db.promise().query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ( ?, ?, ?, ?)', [ responses.first, responses.last, reference.roleConvert[responses.role], mgr]).catch((err) => {
         console.log(err);
         return { error: 'query failed' }
     });
 
-    if (mgr) {
-        reference.managerNames.push(responses.manager);
-        reference.mgrConvert[response.manager] = response.id;
-    }
-    console.log(addition);
-    return;
+    const fullName = `${responses.first} ${responses.last}`;
+    const mgrName = `${fullName} (${responses.role})`;
+    reference.employeeNames.push(mgrName);
+    reference.managerNames.push(mgrName);
+    reference.mgrConvert[mgrName] = addition[0].insertId;
+    return addition;
+}
+
+const updateEmployee = async(responses) => {
+    const update = await db.promise().query('UPDATE employee SET role_id=? WHERE id=?', [reference.roleConvert[responses.role], reference.mgrConvert[responses.employee]]).catch((err) => {
+        console.log(err);
+        return { error: 'update failed' }
+    });
+
+    console.log(update);
 }
 
 
@@ -96,5 +105,5 @@ function convertToCurrency(int) {
 }
 
 
-module.exports = { getDepartments, getRoles, getEmployees, addDepartment, addRole, addEmployee }
+module.exports = { getDepartments, getRoles, getEmployees, addDepartment, addRole, addEmployee, updateEmployee }
 
