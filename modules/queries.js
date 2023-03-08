@@ -109,6 +109,15 @@ const updateRole = async(responses, justName) => {
     return update;    
 }
 
+const updateManager = async(responses) => {
+    const update = await db.promise().query('UPDATE employee SET manager_id=? WHERE id=?', [reference.mgrConvert[responses.manager], reference.mgrConvert[responses.employee]]).catch((err) => {
+        console.log(err);
+        return { error: 'update failed' }
+    });
+
+    return update;    
+}
+
 
 function convertToCurrency(int) {
     const convert =  new Intl.NumberFormat('en-US', {
@@ -120,5 +129,5 @@ function convertToCurrency(int) {
 }
 
 
-module.exports = { getDepartments, getRoles, getEmployees, addDepartment, addRole, addEmployee, updateRole }
+module.exports = { getDepartments, getRoles, getEmployees, addDepartment, addRole, addEmployee, updateRole, updateManager }
 

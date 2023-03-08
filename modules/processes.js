@@ -67,14 +67,33 @@ const updateEmployeeRole = async () => {
         return;
     }
     const responses = await inquirer.prompt(
-        values.prompts.updateEmployee
+        values.prompts.updateRole
     )
 
     const justName = responses.employee.split(' (')[0];
     await queries.updateRole(responses, justName);
 
     console.clear();
-    console.log(`\n\nThe employee "${justName}" has been been updated.\n\n`)
+    console.log(`\n\n${justName}'s role has been updated.\n\n`)
+    console.log(`\n\n`);
+
+}
+
+
+const updateEmployeeManager = async () => {
+    if ( values.employeeNames.length == 1 ) {
+        console.log(`\n\nThere are not enough employees entered.\nCreate them by using "Add Employee".\n\n`);
+        return;
+    }
+    const responses = await inquirer.prompt(
+        values.prompts.updateManager
+    )
+
+    const justName = responses.employee.split(' (')[0];
+    await queries.updateManager(responses);
+
+    console.clear();
+    console.log(`\n\n${justName}'s manager has been changed.\n\n`)
     console.log(`\n\n`);
 
 }
@@ -145,6 +164,7 @@ module.exports = {
     getRoles,
     getEmployees,
     updateEmployeeRole,
+    updateEmployeeManager,
     addDepartment,
     addRole,
     addEmployee

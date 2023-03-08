@@ -48,7 +48,7 @@ const prompts = {
             message: "What would you like to do?",
             name: "action",
             type: "list",
-            choices: ["View Employees", "View Roles", "View Departments", "Add Employee", "Update Employee Role", "Add Role", "Add Department", "Done"]
+            choices: ["View Employees", "View Roles", "View Departments", "Add Employee", "Update Employee Role", "Update Employee Manager", "Add Role", "Add Department", "Done"]
         },
     newDepartment:
         {
@@ -66,12 +66,17 @@ const prompts = {
             { message: "What is the employee's last name?", name: "last", type: "input" },
             { message: "What is the employee's role?", name: "role", type: "list", choices: roleNames }
         ],
-    updateEmployee:
+    updateRole:
         [
             { message: "Which employee needs a different role?", name: "employee", type: "list", choices: employeeNames },
             { message: "What will be the employee's new role?", name: "role", type: "list", choices: roleNames },
         ],
-    getRoles: 
+    updateManager:
+        [
+            { message: "Which employee needs a different manager?", name: "employee", type: "list", choices: employeeNames },
+            { message: "Who will be the employee's new manager?", name: "manager", type: "list", choices: employeeNames }
+        ],
+    ggetRoles: 
         {
             message: "Which department?",
             name: "department",
