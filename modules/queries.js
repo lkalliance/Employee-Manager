@@ -92,7 +92,10 @@ const updateRole = async(responses, justName) => {
         return { error: 'update failed' }
     });
 
+    const newName = `${justName} (${responses.role})`;
     reference.empRoles[justName] = responses.role;
+    reference.managerNames.splice( reference.managerNames.indexOf(responses.employee), 1, newName );
+    reference.employeeNames.splice( reference.employeeNames.indexOf(responses.employee), 1, newName );
     return update;    
 }
 

@@ -1,14 +1,15 @@
 const inquirer = require('inquirer');
+const press = require('press-any-key');
 const initialize = require('./modules/initialize');
 const processes = require('./modules/processes');
 
 const questions = {
-    "View All Employees": processes.getEmployees,
+    "View Employees": processes.getEmployees,
     "Add Employee": processes.addEmployee,
-    "Update Employee Role": processes.updateEmployee,
-    "View All Roles": processes.getRoles,
+    "Update Employee Role": processes.updateEmployeeRole,
+    "View Roles": processes.getRoles,
     "Add Role":  processes.addRole,
-    "View All Departments": processes.getDepartments,
+    "View Departments": processes.getDepartments,
     "Add Department": processes.addDepartment
 };
 
@@ -16,8 +17,10 @@ const startProcess = async () => {
     const q = await inquirer.prompt(
         initialize.prompts.default
     );
+    console.log(q.action);
     if ( q.action == "Done" ) endProcess();
     else await questions[q.action](q);
+    await press(`press any key to continue`);
     startProcess();
 }
 
