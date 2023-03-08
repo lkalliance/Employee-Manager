@@ -1,33 +1,28 @@
-const mysql = require('mysql2');
-const inquirer = require('inquirer');
-const inquiries = require('./modules/inquiries');
-const queries = require('./modules/queries');
+const initialize = require('./modules/initialize');
+const processes = require('./modules/processes');
 
-const db = mysql.createConnection(
-    {
-      host: 'localhost',
-      // MySQL username,
-      user: 'root',
-      // MySQL password
-      password: '',
-      database: 'company_info_db'
-    },
-    console.log(`Connected to the company_info_db database.`)
-);
+const questions = {
+    "View All Employees": processes.getEmployees,
+    "Add Employee": processes.addEmployee,
+    "Update Employee Role": processes.updateEmployee,
+    "View All Roles": processes.getRoles,
+    "Add Role":  processes.addRole,
+    "View All Departments": processes.getDepartments,
+    "Add Department": processes.addDepartment
+};
 
-init();
-
-const init = () => {
-    // init goes here
-    startProcess()
-}
-
-const startProcess = async function () {
+const startProcess = async () => {
     const q = await inquirer.prompt(
-        inquiries.default
+        inq.prompts.default
     );
-    if ( q == "Done" ) return;
-    inquiries.questions[q];    
+    if ( q.action == "Done" ) return;
+    else initialize.questions[q.action]();
 }
 
-module.exports = db;
+const start = async () => {
+    await initialize.init();
+    startProcess();
+}
+
+start();
+

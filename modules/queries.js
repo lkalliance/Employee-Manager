@@ -1,89 +1,100 @@
 const inquirer = require('inquirer');
-const db = require('../index');
-const inquiries = require('./inquiries');
+const data = require('./db_server');
+const reference = require('./initialize');
+const db = data.db;
 
-const getEmployees = async function (department) {
-    const queries = [
-        `SELECT e.id, e.first_name, e.last_name, r.title, d.name as department, r.salary FROM employee e JOIN role r ON e.role_id=r.id JOIN department d ON r.department_id=d.id${(department >= 0) ? ` WHERE r.department=${department};` : ''};`,
-        `SELECT m.first_name, m.last_name FROM employee e LEFT JOIN employee m ON e.manager_id=m.id;`
-    ];
-    const employees1 = await db.query(queries[0], (err, result) => {
-        if (err) {
-            console.log(new Error('Select operation not successful'), err);
-            return false;
-        } else { const results = result; }
+
+const getDepartments = async () => {
+    const dataReturn = await db.promise().query('SELECT id, name as department FROM department').catch((err) => {
+        console.log(err);
+        return { error: 'query failed' }
     });
-    const employees2 = await db.query(queries[1], (err, result) => {
-        if (err) {
-            console.log(new Error('Select operation not successful'), err);
-            return false;
-        } else {
-            for ( employee of results ) employee.push(`${result.first_name} ${result.last_name}`);
-            return results;
-        }
+    return dataReturn[0];
+}
+
+const getRoles = async () => {
+    const dataReturn = await db.promise().query('SELECT r.id, r.title, d.name as department, r.salary FROM role r LEFT JOIN department d ON r.department_id=d.id').catch((err) => {
+        console.log(err);
+        return { error: 'query failed' }
+    });
+
+    const result = dataReturn[0];
+    for (role in data) {
+        role.salary = convertToCurrency(role.salary);
+    }
+    return result;
+}
+
+const getEmployees = async () => {
+    const dataReturn = await db.promise().query('SELECT e.id, e.first_name as first, e.last_name as last, r.title, d.name as department, r.salary, m.first_name as mfirst, m.last_name as mlast FROM employee e LEFT JOIN employee m ON e.manager_id=m.id LEFT JOIN role r ON e.role_id=r.id LEFT JOIN department d ON r.department_id=d.id').catch((err) => {
+        console.log(err);
+        return { error: 'query failed' }
+    });
+
+    const result = dataReturn[0];
+    const data = [];
+    for (employee in result) {
+        data.push({
+            id: employee.id,
+            name: `${employee.first} ${employee.last}`,
+            title: employee.title,
+            department: employee.department,
+            manager: `${employee.mfirst} ${employee.mlast}`,
+            salary: convertToCurrency(employee.salary)
+        });
+    }
+    return data;
+}
+
+const addDepartment = async (responses) => {
+    const addition = await db.promise().query('INSERT INTO department (name) VALUES ( ? )', responses.name).catch((err) => {
+        console.log(err);
+        return { error: 'query failed' }
     })
-};
 
-const getRoles = async function (department) {
-    const whichDepartment = inquirer.prompt(
-        inquiries.getRoles
-    )
-    const roles = await db.query('SELECT r.title, d.name as department, r.salary FROM role r JOIN department d ON r.department_id=d.id?',
-    (department>=0) ? ` WHERE d.id=${department}` : ';', (err, result) => {
-        if (err) {
-            console.log(new Error('Select operation not successful'), err);
-            return false;
-        } else return result;
+    reference.departmentNames.push(responses.name);
+    reference.depConvert[responses.name] = responses.id;
+    console.log(addition);
+    return;
+}
+
+const addRole = async (responses) => {
+    const addition = await db.promise().query('INSERT INTO role (title, salary, department_id) VALUES ( ?, ?, ? )', [ responses.title, responses.salary, reference.depConvert[responses.department]]).catch((err) => {
+        console.log(err);
+        return { error: 'query failed' }
     })
-};
 
-const getDepartments = async function () {
-    const departments = await db.query('SELECT id, name as department FROM department;', (err, result) => {
-        if (err) {
-            console.log(new Error('Select operation not successful', err));
-            return false;
-        } else return result;
-    })
-};
+    reference.roleNames.push(responses.title);
+    reference.roleConvert[responses.title] = responses.id;
+    console.log(addition);
+    return;
+}
 
-const addEmployee = async function () {
-    const responses = await inquirer.prompt(
-        inquiries.addDepartment
-    );
-    const addition = await db.query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);', [responses.first, responses.last, responses.role, responses.manager], (err, result) => {
-        if (err) {
-            console.log(new Error('Add operation not successful', err));
-            return false;
-        }
+const addEmployee = async (responses) => {
+    const mgr = responses.manager ? reference.mgrConvert[responses.manager] : null;
+    const addition = await db.promise().query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ( ?, ?, ?, ?)', [ respones.first, responses.last, reference.roleConvert[responses.role], mgr]).catch((err) => {
+        console.log(err);
+        return { error: 'query failed' }
     });
-    const newEmployee = new Employee(addition);
-};
 
-const addRole = async function () {
-    const responses = await inquirer.prompt(
-        inquiries.addRole
-    );
-    const addition = await db.query('INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?);', [responses.title, responses.salary, responses.department], (err, result) => {
-        if (err) {
-            console.log(new Error('Add operation not successful', err));
-            return false;
-        }
+    if (mgr) {
+        reference.managerNames.push(responses.manager);
+        reference.mgrConvert[response.manager] = response.id;
+    }
+    console.log(addition);
+    return;
+}
+
+
+function convertToCurrency(int) {
+    const convert =  new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        maximumFractionDigits: 0
     });
-    const newRole = new Role(addition);
-};
-
-const addDepartment = async function () {
-    const responses = await inquirer.prompt(
-        inquiries.addDepartment
-    );
-    const addition = await db.query('INSERT INTO department (name) VALUES (?);', responses.name , (err, result) => {
-        if (err) {
-            console.log(new Error('Add operation not successful', err));
-            return false;
-        }
-    });
-    const newDepartment = new Department(addition);
-};
+    return convert.format(int);
+}
 
 
-module.exports = { getEmployees, getRoles, getDepartments, addEmployee, addRole, addDeparrtment };
+module.exports = { getDepartments, getRoles, getEmployees, addDepartment, addRole, addEmployee }
+
