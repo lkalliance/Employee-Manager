@@ -3,6 +3,7 @@ const press = require('press-any-key');
 const initialize = require('./modules/initialize');
 const processes = require('./modules/processes');
 
+// References to procedures to call from action selection
 const questions = {
     "View Employees": processes.getEmployees,
     "Add Employee": processes.addEmployee,
@@ -15,6 +16,7 @@ const questions = {
 };
 
 const startProcess = async () => {
+    // This function calls the action selection and routes the answer
     const q = await inquirer.prompt(
         initialize.prompts.default
     );
@@ -29,11 +31,13 @@ const startProcess = async () => {
 }
 
 const start = async () => {
+    // This function is called once to start the app
     await initialize.init();
     startProcess();
 }
 
 const endProcess = () => {
+    // This function handles the exiting of the app
     console.log("\n\nNow exiting the application.\n\n");
     setTimeout(() => { process.exit() }, 500);
 }
