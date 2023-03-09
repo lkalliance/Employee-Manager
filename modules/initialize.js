@@ -47,7 +47,7 @@ const prompts = {
             message: "What would you like to do?",
             name: "action",
             type: "list",
-            choices: ["View Employees", "View Roles", "View Departments", "Add Employee", "Update Employee Role", "Update Employee Manager", "Add Role", "Add Department", "Done"]
+            choices: ["View Employees", "View Roles", "View Departments", "Add Employee", "Add Role", "Add Department", "Update Employee Role", "Update Employee Manager", "Done"]
         },
     newDepartment:
         {
