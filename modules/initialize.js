@@ -37,7 +37,7 @@ const init = async () => {
     });
 
     console.clear();
-    console.log(`\n\nWelcome to the Employee Tracker. Please select an option to start.\n\n`);
+    console.log(`\n\n\x1b[33mWelcome to the Employee Tracker. Please select an option to start.\n\n`);
 
     return;
 }
