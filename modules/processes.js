@@ -88,6 +88,11 @@ const addDepartment = async () => {
         console.log('\n\nThere was a problem with your entry. Please try again.\n\n');
         return;
     });
+    if (values.departmentNames.indexOf(responses.name) >= 0) {
+        // this department already exists
+        console.log(`\n\nThe department "${responses.name}" already exists.\n\n`);
+        return;
+    }
     // add to the database
     await queries.addDepartment(responses);
     // tell the user it's done
@@ -112,6 +117,11 @@ const addRole = async () => {
         console.log('\n\nThere was a problem with your entry. Please try again.\n\n');
         return;
     });
+    if (values.roleNames.indexOf(responses.title) >= 0) {
+        // this role already exists
+        console.log(`\n\nThe department "${responses.title}" already exists.\n\n`);
+        return;
+    }
     // add to the database
     await queries.addRole(responses);
     // tell the user it's done
@@ -161,7 +171,7 @@ const updateEmployeeRole = async () => {
     }
     if ( values.roleNames.length <= 1 ) {
         // there are not enough roles to change from one to another
-        console.log('\n\nThere are not enough roles entered.\nCreate one by using \x1b[33;1mAdd Role\x1b[39;0m.\n\n');
+        console.log('\n\nThere are not enough roles entered to change to a different one.\nCreate one by using \x1b[33;1mAdd Role\x1b[39;0m.\n\n');
         return;
     }
     console.clear();
@@ -182,7 +192,7 @@ const updateEmployeeManager = async () => {
 
     if ( values.employeeNames.length == 1 ) {
         // there are not enough employees to make it possible
-        console.log('\n\nThere are not enough employees entered.\nCreate them by using \x1b[33;1mAdd Employee\x1b[39;0m.\n\n');
+        console.log('\n\nThere are not enough employees entered to change to a new Manager.\nCreate them by using \x1b[33;1mAdd Employee\x1b[39;0m.\n\n');
         return;
     }
     console.clear();
@@ -191,6 +201,11 @@ const updateEmployeeManager = async () => {
     const responses = await inquirer.prompt(
         values.prompts.updateManager
     )
+    if (responses.employee == responses.manager) {
+        // employee selected as own manager
+        console.log('\n\nYou cannot define an employee as their own Manager.\n\n');
+        return;
+    }
     const justName = responses.employee.split(' (')[0];
     // update the database
     await queries.updateManager(responses);
