@@ -1,5 +1,8 @@
+/* -- THIS MODULE IS FOR CONNECTING TO THE MYSQL DATABASE -- */
+
 const mysql = require('mysql2');
 
+// Create the database connection
 const db = mysql.createConnection(
     {
         host: '127.0.0.1',

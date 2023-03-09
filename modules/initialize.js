@@ -1,16 +1,20 @@
+/* -- THIS MODULE SETS UP REFERENCES USED DURING THE APP -- */
+
 const data = require('./db_server');
 const db = data.db;
 
-const managerNames = ["No one"];
-const mgrConvert = {};
-const employeeNames = [];
-const empRoles = {};
-const departmentNames = [];
-const depConvert = {};
-const roleNames = [];
-const roleConvert = {};
+// Declare containers to track reference arrays and objects
+const managerNames = ["No one"]; // array of managers for adding employee
+const mgrConvert = {};           // manager name => id
+const employeeNames = [];        // array of employees for updating manager
+const empRoles = {};             // employee => id
+const departmentNames = [];      // array of departments for adding role
+const depConvert = {};           // department name => id
+const roleNames = [];            // array of roles for adding or updating
+const roleConvert = {};          // role title => id
 
 const init = async () => {
+    // put up spash screen
     setUpNewScreen();
     
     // construct department array and object
@@ -41,6 +45,7 @@ const init = async () => {
     return;
 }
 
+// Objects to use for inquirer instances
 const prompts = {
     default: 
         { 
@@ -85,6 +90,7 @@ const prompts = {
 }
 
 function setUpNewScreen() {
+    // This function creates the splash screen 
     console.clear();
     console.log('\x1b[33;1m')
     console.log(' eeeee ----------------------------------------');
