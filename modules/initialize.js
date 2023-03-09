@@ -11,6 +11,8 @@ const roleNames = [];
 const roleConvert = {};
 
 const init = async () => {
+    setUpNewScreen();
+    
     // construct department array and object
     const departments = await db.promise().query('SELECT id, name FROM department');
     departments[0].forEach((department) => {
@@ -35,9 +37,6 @@ const init = async () => {
         empRoles[fullName] = employee.title;
         mgrConvert[mgrName] = employee.id;
     });
-
-    console.clear();
-    console.log(`\n\n\x1b[33mWelcome to the Employee Tracker. Please select an option to start.\n\n`);
 
     return;
 }
@@ -83,6 +82,29 @@ const prompts = {
             type: "list",
             choices: departmentNames
         }
+}
+
+function setUpNewScreen() {
+    console.clear();
+    console.log('\x1b[33;1m')
+    console.log(' eeeee ----------------------------------------');
+    console.log(' e                    l ');
+    console.log(' e     m mm mm   ppp  l  ooo  y   y  eee   eee  ' );
+    console.log(' eeee  m  mm  m p   p l o   o y   y e   e e   e ');
+    console.log(' e     m   m  m p   p l o   o y   y eeeee eeeee ');
+    console.log(' e     m   m  m p   p l o   o  y y  e     e     ');
+    console.log(' eeeee m   m  m pppp  l  ooo    y    eee   eee  ');
+    console.log('                p              y     ');
+    console.log(' m     m        p             y      ');
+    console.log(' mm   mm');
+    console.log(' m m m m   aaa   n nn   aaa    ggg   eee  r rr ');
+    console.log(' m  m  m  a   a  nn  n a   a  g   g e   e rr  r');
+    console.log(' m     m  a   a  n   n a   a  g   g eeeee r');
+    console.log(' m     m  a   a  n   n a   a  g   g e     r');
+    console.log(' m     m   aaa a n   n  aaa a  gggg  eee  r');
+    console.log('                                  g');
+    console.log(' ------------------------------ gg ------------');
+    console.log('\x1b[39;1m ');
 }
 
 
