@@ -88,6 +88,11 @@ const addDepartment = async () => {
         console.log('\n\nThere was a problem with your entry. Please try again.\n\n');
         return;
     });
+    if (values.departmentNames.indexOf(responses.name) >= 0) {
+        // this department already exists
+        console.log(`\n\nThe department "${responses.name}" already exists.\n\n`);
+        return;
+    }
     // add to the database
     await queries.addDepartment(responses);
     // tell the user it's done
@@ -112,6 +117,11 @@ const addRole = async () => {
         console.log('\n\nThere was a problem with your entry. Please try again.\n\n');
         return;
     });
+    if (values.roleNames.indexOf(responses.title) >= 0) {
+        // this role already exists
+        console.log(`\n\nThe department "${responses.title}" already exists.\n\n`);
+        return;
+    }
     // add to the database
     await queries.addRole(responses);
     // tell the user it's done
