@@ -11,7 +11,7 @@ const questions = {
     "View Roles": processes.getRoles,
     "Add Role":  processes.addRole,
     "View Departments": processes.getDepartments,
-    "Add Department": processes.addDepartment
+    "Add Department": processes.addDepartment,
 };
 
 const startProcess = async () => {
@@ -19,7 +19,10 @@ const startProcess = async () => {
         initialize.prompts.default
     );
     console.log(q.action);
-    if ( q.action == "Done" ) endProcess();
+    if ( q.action == "Done" ) {
+        endProcess();
+        return;
+    }
     else await questions[q.action](q);
     await press(`\x1b[36mpress any key to continue`);
     startProcess();
@@ -31,8 +34,8 @@ const start = async () => {
 }
 
 const endProcess = () => {
-    console.log("Now exiting the application.");
-    process.exit();
+    console.log("\n\nNow exiting the application.\n\n");
+    setTimeout(() => { process.exit() }, 500);
 }
 
 start();
