@@ -26,7 +26,7 @@ const startProcess = async () => {
         return;
     }
     else await questions[q.action](q);
-    await press(`\x1b[36mpress any key to continue`);
+    await press('\x1b[36mpress any key to continue');
     startProcess();
 }
 

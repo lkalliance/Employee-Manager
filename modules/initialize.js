@@ -92,24 +92,24 @@ const prompts = {
 function setUpNewScreen() {
     // This function creates the splash screen 
     console.clear();
-    console.log('\x1b[33;1m')
-    console.log(' eeeee ----------------------------------------');
-    console.log(' e                    l ');
-    console.log(' e     m mm mm   ppp  l  ooo  y   y  eee   eee  ' );
-    console.log(' eeee  m  mm  m p   p l o   o y   y e   e e   e ');
-    console.log(' e     m   m  m p   p l o   o y   y eeeee eeeee ');
-    console.log(' e     m   m  m p   p l o   o  y y  e     e     ');
-    console.log(' eeeee m   m  m pppp  l  ooo    y    eee   eee  ');
-    console.log('                p              y     ');
-    console.log(' m     m        p             y      ');
-    console.log(' mm   mm');
-    console.log(' m m m m   aaa   n nn   aaa    ggg   eee  r rr ');
-    console.log(' m  m  m  a   a  nn  n a   a  g   g e   e rr  r');
-    console.log(' m     m  a   a  n   n a   a  g   g eeeee r');
-    console.log(' m     m  a   a  n   n a   a  g   g e     r');
-    console.log(' m     m   aaa a n   n  aaa a  gggg  eee  r');
-    console.log('                                  g');
-    console.log(' ------------------------------ gg ------------');
+    console.log(' ')
+    console.log(' \x1b[36meeeeee -----------------------------------------------');
+    console.log(' \x1b[36mee     \x1b[33;1m                 ll ');
+    console.log(' \x1b[36mee     \x1b[33;1mmm mm mm   pppp  ll  oooo  yy   y  eeee   eeee  ' );
+    console.log(' \x1b[36meeeee  \x1b[33;1mmm  mm  m pp   p ll oo   o yy   y ee   e ee   e ');
+    console.log(' \x1b[36mee     \x1b[33;1mmm   m  m pp   p ll oo   o yy   y eeeeee eeeeee ');
+    console.log(' \x1b[36mee     \x1b[33;1mmm   m  m pp   p ll oo   o  yy y  ee     ee     ');
+    console.log(' \x1b[36meeeeee \x1b[33;1mmm   m  m ppppp  ll  oooo    yy    eeee   eeee  ');
+    console.log('                  pp                yy     ');
+    console.log(' \x1b[36mmm     m         \x1b[33;1mpp               yy      ');
+    console.log(' \x1b[36mmmm   mm');
+    console.log(' \x1b[36mmm m m m   \x1b[33;1maaaa   nn nn   aaaa    gggg   eeee  rr rr ');
+    console.log(' \x1b[36mmm  m  m  \x1b[33;1maa   a  nnn  n aa   a  gg   g ee   e rrr  r');
+    console.log(' \x1b[36mmm     m  \x1b[33;1maa   a  nn   n aa   a  gg   g eeeeee rr');
+    console.log(' \x1b[36mmm     m  \x1b[33;1maa   a  nn   n aa   a  gg   g ee     rr');
+    console.log(' \x1b[36mmm     m   \x1b[33;1maaaa a nn   n  aaaa a  ggggg  eeee  rr');
+    console.log(' \x1b[36m------------------------------------- \x1b[33;1mg \x1b[36m-------------');
+    console.log('                                    \x1b[33;1mggg');
     console.log('\x1b[39;1m ');
 }
 
