@@ -27,7 +27,7 @@ There are several several dependency modules, all either available via npm or cu
 * press-any-key
 * console.table
 
-Once all the modules are in place, run the provided schema sql file (/db/schema.sql) at your mysql prompt to create the database.
+Once all the modules are in place, run the provided schema sql file (/db/schema.sql) at your mysql prompt to create the database. You can also pre-seed the database with some test data by running the seeds file (/db/seeds.sql).
 
 
 ## Usage Information
