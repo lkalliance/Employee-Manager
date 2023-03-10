@@ -2,7 +2,9 @@
 
 ## Description
 
-<img src='./assets/images/EM-screenshot-1.png' width='300' style='float: right; margin-left: 15px;' />The Employee Manager CLI application allows a user to enter information about a company's organization and to display it in an organized fashion based on an information tree of Department > Role > Employee.
+<img src='./assets/images/EM-screenshot-1.png' width='300' style='float: right; margin-left: 15px;' />
+
+The Employee Manager CLI application allows a user to enter information about a company's organization and to display it in an organized fashion based on an information tree of Department > Role > Employee.
 
 I like keeping track of the staff of my local MLB franchise, I don't think they get enough attention. It occurred to me that actual business owners might make good use of such a tool as well! So I made this.
 
